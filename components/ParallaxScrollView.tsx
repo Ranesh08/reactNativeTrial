@@ -26,7 +26,15 @@ export default function ParallaxScrollView({
   const colorScheme = useColorScheme() ?? 'light';
   const scrollRef = useAnimatedRef<Animated.ScrollView>();
   const scrollOffset = useScrollViewOffset(scrollRef);
-  const bottom = useBottomTabOverflow();
+  
+  // Handle cases where the component is not inside a Bottom Tab Navigator
+  let bottom = 0;
+  try {
+    bottom = useBottomTabOverflow();
+  } catch (error) {
+    // If not in a tab navigator context, use a default value
+    console.log('Not in a Bottom Tab Navigator context, using default bottom value');
+  }
   const headerAnimatedStyle = useAnimatedStyle(() => {
     return {
       transform: [
